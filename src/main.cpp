@@ -36,10 +36,9 @@ int main() {
 
 
     char buffer[sizeof(Message)];
-    cout << "after buffer" << endl;
+    cout << "Listening for multicast messages..." << endl;
     while (true) {
         int n = recv(sockfd, buffer, sizeof(Message), 0);
-        cout << "after receive with n " << n << endl;
         if (n < 0) {
             cout << "recv failed" << endl;
             continue;
@@ -48,9 +47,16 @@ int main() {
             cout << "Socket closed" << endl;
             break;
         }
-        Message md;
-        memcpy(&md, buffer, sizeof(Message));
-        cout << "Message from multicast sender: " << md.instrumentId << endl;
+        if (n == sizeof(Message)) {
+            Message md;
+            memcpy(&md, buffer, sizeof(Message));
+            cout << "Parsed message: ts=" << md.timestamp
+                 << " id=" << md.instrumentId
+                 << " price=" << md.price
+                 << " qty=" << md.qty << endl;
+        } else {
+            cout << "Unexpected size: " << n << " bytes" << endl;
+        }
     }
     
     return 0;

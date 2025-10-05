@@ -1,6 +1,7 @@
 import socket
 import struct
 import time
+# import binascii
 
 
 MCAST_GRP = '239.255.0.1'
@@ -15,7 +16,8 @@ for i in range(10):
     instrument_id = i
     price = 100.0 + i
     qty = 10 + i
-    msg = struct.pack("QIdI", timestamp, instrument_id, price, qty)
+    msg = struct.pack("<QIdI", timestamp, instrument_id, price, qty)
     sock.sendto(msg, (MCAST_GRP, MCAST_PORT))
-    print("sending msg", timestamp)
+    print(f"Sending: ts={timestamp} id={instrument_id} price={price} qty={qty}")
+    # print("Raw bytes:", binascii.hexlify(msg).decode())
     time.sleep(1)
