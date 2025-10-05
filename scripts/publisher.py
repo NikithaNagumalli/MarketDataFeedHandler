@@ -14,7 +14,7 @@ sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 for i in range(10):
     timestamp = int(time.time_ns())
     instrument_id = i
-    price = 100.0 + i
+    price = 100.5 + i
     qty = 10 + i
     msg = struct.pack("<QIdI", timestamp, instrument_id, price, qty)
     sock.sendto(msg, (MCAST_GRP, MCAST_PORT))
